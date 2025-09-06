@@ -1,5 +1,6 @@
 # OLD (causes ModuleNotFoundError)
-from helper import download_hugging_face_embeddings
+from src.helper import download_hugging_face_embeddings
+
 from prompt import system_prompt
 
 # NEW (correct path)
@@ -90,4 +91,5 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
+
 
