@@ -1,9 +1,3 @@
-# OLD (causes ModuleNotFoundError)
-from src.helper import download_hugging_face_embeddings
-
-from prompt import system_prompt
-
-# NEW (correct path)
 from src.helper import download_hugging_face_embeddings
 from src.prompt import system_prompt
 
@@ -18,9 +12,9 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 
-# Local imports
-from src.helper import download_hugging_face_embeddings
-from src.prompt import system_prompt
+# Local imports (avoid duplicates)
+# from src.helper import download_hugging_face_embeddings  # Removed duplicate import
+# from src.prompt import system_prompt  # Removed duplicate import
 
 # -----------------------
 # App Initialization
@@ -70,7 +64,6 @@ def index():
     """Renders chat UI"""
     return render_template("chat.html")
 
-
 @app.route("/get", methods=["POST"])
 def chat():
     """Handles chat messages via POST"""
@@ -81,6 +74,7 @@ def chat():
     try:
         print(f"User: {msg}")
         response = rag_chain.invoke({"input": msg})
+        # Ensure 'answer' key exists in response
         answer = response.get("answer", "Sorry, I couldn’t find an answer.")
         print(f"Bot: {answer}")
         return jsonify({"answer": answer})
@@ -88,8 +82,5 @@ def chat():
         print(f"Error: {e}")
         return jsonify({"error": "Something went wrong on the server"}), 500
 
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=True)
-
-
